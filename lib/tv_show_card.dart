@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_app2_series/rating_widget.dart';
 import 'package:flutter_app2_series/tv_show_model.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
 
 class TvShowCard extends StatelessWidget {
   const TvShowCard({super.key, required this.tvShow, required this.index});
@@ -65,6 +66,20 @@ class TvShowCard extends StatelessWidget {
                 ],
               ),
               actions: [
+                ElevatedButton(
+                  onPressed: () {
+                    context.read<TvShowModel>().removeTvShow(tvShow, context);
+                    Navigator.of(context).pop();
+                  },
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: colorScheme.primary,
+                    foregroundColor: colorScheme.onPrimary,
+                  ),
+                  child: Text(
+                    'Remover',
+                    style: TextStyle(fontWeight: FontWeight.bold),
+                  ),
+                ),
                 ElevatedButton(
                   onPressed: () => Navigator.of(context).pop(),
                   style: ElevatedButton.styleFrom(

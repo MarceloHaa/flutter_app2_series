@@ -1,13 +1,19 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_app2_series/add_tv_show_screen.dart';
+import 'package:flutter_app2_series/tv_show_form.dart';
 import 'package:flutter_app2_series/custom_drawer.dart';
 import 'package:flutter_app2_series/tv_show_data.dart';
 import 'package:flutter_app2_series/tv_show_model.dart';
 import 'package:flutter_app2_series/tv_show_screen.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
 
 void main() {
-  runApp(const MainApp());
+  runApp(
+    ChangeNotifierProvider(
+      create: (context) => TvShowModel(),
+      child: const MainApp(),
+    ),
+  );
 }
 
 class MainApp extends StatefulWidget {
@@ -20,17 +26,26 @@ class MainApp extends StatefulWidget {
 class _MainAppState extends State<MainApp> {
   final List<TvShow> tvShows = favTvShowList;
 
-  int currentScreenIndex = 0;
-
-  void addTvShow(TvShow newTvShow) {
+  void addTvShow(TvShow tvShow) {
     setState(() {
-      tvShows.add(newTvShow);
+      tvShows.add(tvShow);
     });
   }
 
+  void removeTvShow(TvShow tvShow) {
+    //final index = tvShows.indexWhere(
+    // (show) => show.title.toLowerCase() == tvShow.title.toLowerCase()
+    // );
+    setState(() {
+      tvShows.remove(tvShow);
+    });
+  }
+
+  int currentScreenIndex = 0;
+
   List<Widget> get screens => [
-    TvShowScreen(tvShows: tvShows),
-    AddTvShowScreen(onAddTvShow: addTvShow),
+    TvShowScreen(),
+    AddTvShowScreen(switchScreen: switchScreen),
   ];
 
   void switchScreen(int index) {

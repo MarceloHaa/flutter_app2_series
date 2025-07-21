@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app2_series/star_rating.dart';
 import 'package:flutter_app2_series/tv_show_model.dart';
+import 'package:provider/provider.dart';
 
 class AddTvShowScreen extends StatefulWidget {
-  final Function(TvShow) onAddTvShow;
+  const AddTvShowScreen({super.key, required this.switchScreen});
 
-  const AddTvShowScreen({super.key, required this.onAddTvShow});
+  final Function(int) switchScreen;
 
   @override
   State<AddTvShowScreen> createState() => _AddTvShowScreenState();
@@ -28,14 +29,8 @@ class _AddTvShowScreenState extends State<AddTvShowScreen> {
           summary: _summaryController.text,
           rating: _rating,
         );
-        widget.onAddTvShow(newTvShow);
-
-        _titleController.clear();
-        _streamController.clear();
-        _summaryController.clear();
-        setState(() {
-          _rating = 0;
-        });
+        context.read<TvShowModel>().addTvShow(newTvShow, context);
+        widget.switchScreen(0);
       }
     }
 
@@ -84,7 +79,7 @@ class _AddTvShowScreenState extends State<AddTvShowScreen> {
                 SizedBox(height: 16),
                 TextFormField(
                   minLines: 1,
-                  maxLines: 6,
+                  maxLines: 5,
                   controller: _summaryController,
                   decoration: InputDecoration(
                     labelText: 'Resumo',
